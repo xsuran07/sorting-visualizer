@@ -100,7 +100,7 @@ export default class BaseAlgorithm {
         this.setItemsColor('setSwappedItems', [this.getIndex(a), this.getIndex(b)]);
 
         // propagate changes to main state variable
-        this.setValues(this.getIndex(a), this.getIndex(b));
+        this.setValues('swap', { a: this.getIndex(a), b: this.getIndex(b) });
 
         // swap items in indices array
         let tmp = this.indices[a];

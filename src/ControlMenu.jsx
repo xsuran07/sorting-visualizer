@@ -6,6 +6,7 @@ import SelectionSort from './algorithms/SelectionSort';
 import BubbleSort from './algorithms/BubbleSort';
 import InsertionSort from './algorithms/InsertionSort';
 import QuickSort from './algorithms/QuickSort';
+import MergeSort from './algorithms/MergeSort';
 
 import styles from './styles/controlMenu.module.css';
 
@@ -31,13 +32,21 @@ function StartAnimation({ algo }) {
       }
     }
 
-    console.log(state.sortedItems)
-    const change = (a, b) => {
+    const change = (type, payload) => {
       let arr = state.blockList.slice();
 
-      let tmp = arr[a].index;
-      arr[a].index = arr[b].index;
-      arr[b].index = tmp;
+      switch(type) {
+      case 'swap':
+        let tmp = arr[payload.a].index;
+        arr[payload.a].index = arr[payload.b].index;
+        arr[payload.b].index = tmp;
+        break;
+      case 'updateIndex':
+        arr[payload.item].index = payload.index;
+        break;
+      default:
+        return;
+      }
 
       dispatch({type: 'setBlockList', payload: arr});
     }
@@ -48,6 +57,7 @@ function StartAnimation({ algo }) {
 
     dispatch({type: 'setSortedItems', payload: []});
     dispatch({type: 'toggleRunning'});
+
     algo.init(state.blockList, change, setItemsolor);
     let t = setInterval(() => algoStep(t), 1000);
     setTimer(t)
@@ -93,6 +103,8 @@ const getAlgorithm = (index) => {
       return new InsertionSort();
     case 3:
       return new QuickSort();
+    case 4:
+      return new MergeSort();
     default:
       return null;
     }
@@ -125,6 +137,7 @@ function ChooseAlgo() {
         <option value={1}>Bubble sort</option>
         <option value={2}>Insertion sort</option>
         <option value={3}>QuickSort sort</option>
+        <option value={4}>MergeSort sort</option>
       </select>
     </div>
   );

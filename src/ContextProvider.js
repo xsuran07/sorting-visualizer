@@ -17,13 +17,14 @@ const reducer = (state, action) => {
         return {...state, blockCount: parseInt(action.payload)};
     case 'setBlockList':
         return {...state, blockList: action.payload};
+    case 'addSwappedItems':
+        return {...state, swappedItems: [...state.swappedItems, ...action.payload]};
     case 'setSwappedItems':
         return {...state, swappedItems: action.payload};
     case 'setSortedItems':
         return {...state, sortedItems: action.payload};
     case 'addSortedItems':
-        let arr = [...state.sortedItems, ...action.payload]
-        return {...state, sortedItems: arr};
+        return {...state, sortedItems: [...state.sortedItems, ...action.payload]};
     case 'setActiveItems':
         return {...state, activeItems: action.payload};
     case 'setSpecialItems':
