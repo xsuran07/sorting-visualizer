@@ -9,16 +9,18 @@ export default class BaseAlgorithm {
      *
      * @param {array} values 
      * @param {function} setValues 
-     * @param {function} setCurrent 
+     * @param {function} setItemColor
      */
-    init(values, setValues, setCurrent) {
+    init(values, setValues, setItemsColor) {
         // flag which signals active animation
-        this.animation = false;     
+        this.animation = false;
+
+        this.finalChange = false;
  
         // set values with values to sort + two callbacks
         this.values = values;
         this.setValues = setValues;
-        this.setCurrent = setCurrent;
+        this.setItemsColor = setItemsColor;
 
         // initialize initialize array with block's indices
         this.indices = [];
@@ -57,6 +59,8 @@ export default class BaseAlgorithm {
      * @returns true if last step has been performed, false otherwise.
      */
     step() {
+        this.setItemsColor('setSwappedItems', []);
+
         // test for end of algorithm
         if(this.testEnd()) {
             return true;
@@ -76,12 +80,29 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Swaps two items in indices array.
+     * Swaps two items in indices array and propagete this swap
+     * to main state variable.
      * 
      * @param {number} a 
-     * @param {number} b 
+     * @param {number} b
+     * @param {boolean} hideSpecial
      */
-    swap(a, b) {
+    swap(a, b, hideSpecial = true) {
+        if(this.finalChange) {
+            this.finalChange = false;
+            this.setItemsColor('addSortedItems', [this.getIndex(a)]);
+        }
+
+        if(hideSpecial) {
+            this.setItemsColor('setSpecialItems', []);
+        }
+        
+        this.setItemsColor('setSwappedItems', [this.getIndex(a), this.getIndex(b)]);
+
+        // propagate changes to main state variable
+        this.setValues(this.getIndex(a), this.getIndex(b));
+
+        // swap items in indices array
         let tmp = this.indices[a];
         this.indices[a] = this.indices[b];
         this.indices[b] = tmp;

@@ -14,33 +14,45 @@ function StartAnimation({ algo }) {
   const [ timer, setTimer ] = useState(null);
 
   function clear(t) {
+    // stop animations
     clearInterval(t);
-    dispatch({type: 'setCurrent', payload: []});
+
+    // reset values of state variables
+    dispatch({type: 'setSwappedItems', payload: []});
+    dispatch({type: 'setActiveItems', payload: []});
+    dispatch({type: 'setSpecialItems', payload: []});
     dispatch({type: 'toggleRunning'});
   }
 
-  function algoStep(t) {
-    if(algo.step()) {
-      clear(t);
+  const handleClick = () => {
+    const algoStep = (t) => {
+      if(algo.step()) {
+        clear(t);
+      }
     }
-  }
 
-  function handleClick() {
+    console.log(state.sortedItems)
+    const change = (a, b) => {
+      let arr = state.blockList.slice();
+
+      let tmp = arr[a].index;
+      arr[a].index = arr[b].index;
+      arr[b].index = tmp;
+
+      dispatch({type: 'setBlockList', payload: arr});
+    }
+
+    const setItemsolor = (type, payload) => {
+        dispatch({type: type, payload: payload});
+    }
+
+    dispatch({type: 'setSortedItems', payload: []});
     dispatch({type: 'toggleRunning'});
-    algo.init(state.blockList, change, (arg) => dispatch({type: 'setCurrent', payload: arg}));
+    algo.init(state.blockList, change, setItemsolor);
     let t = setInterval(() => algoStep(t), 1000);
     setTimer(t)
   }
 
-  function change(a, b) {
-    let arr = state.blockList.slice();
-
-    let tmp = arr[a].index;
-    arr[a].index = arr[b].index;
-    arr[b].index = tmp;
-
-    dispatch({type: 'setBlockList', payload: arr});
-  }
 
   return (
     <button onClick={(state.running)? () => clear(timer) : handleClick}>

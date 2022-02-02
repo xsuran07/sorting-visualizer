@@ -19,7 +19,7 @@ function Visializer() {
         });
       }
 
-      console.log('fsdfs', arr)
+      dispatch({type: 'setSortedItems', payload: []});
       dispatch({type: 'setBlockList', payload: arr});
     },
     [state.blockCount]

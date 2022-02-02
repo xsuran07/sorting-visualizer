@@ -17,8 +17,17 @@ const reducer = (state, action) => {
         return {...state, blockCount: parseInt(action.payload)};
     case 'setBlockList':
         return {...state, blockList: action.payload};
-    case 'setCurrent':
-        return {...state, current: action.payload};
+    case 'setSwappedItems':
+        return {...state, swappedItems: action.payload};
+    case 'setSortedItems':
+        return {...state, sortedItems: action.payload};
+    case 'addSortedItems':
+        let arr = [...state.sortedItems, ...action.payload]
+        return {...state, sortedItems: arr};
+    case 'setActiveItems':
+        return {...state, activeItems: action.payload};
+    case 'setSpecialItems':
+        return {...state, specialItems: action.payload};
     case 'setSpeed':
         return {...state, speed: parseInt(action.payload)};
     case 'setAlgorithm':
@@ -36,7 +45,10 @@ const init = () => {
         speed: INITIAL_SPEED,
         algorithm: new SelectionSort(),
         blockList: [],
-        current: [],
+        swappedItems: [],
+        sortedItems: [],
+        activeItems: [],
+        specialItems: [],
         running: false
     };
 

@@ -1,19 +1,17 @@
 import BaseAlgorithm from './BaseAlgorithm';
 
 export default class QuickSort extends BaseAlgorithm {
-    init(values, setValues, setCurrent) {
-        super.init(values, setValues, setCurrent);
+    init(values, setValues, setItemsColor) {
+        super.init(values, setValues, setItemsColor);
 
         this.stack = [0, this.values.length - 1];
         this.top = 1;
         this.newIter = true;
+        this.sorted = [];
     }
 
     animate() {
-        this.setCurrent([this.getIndex(this.i), this.getIndex(this.oldJ)]);
-
-        this.swap(this.i, this.oldJ);
-        this.setValues(this.getIndex(this.i), this.getIndex(this.oldJ));
+        this.swap(this.i, this.oldJ, false);
     }
 
     resetValues() {
@@ -25,10 +23,17 @@ export default class QuickSort extends BaseAlgorithm {
         this.i = this.l - 1;
         this.j = this.l;
         this.newIter = false;
+
+        this.setItemsColor('setSpecialItems', [this.getIndex(this.h)])
     }
 
     logic() {
         if(this.newIter) {
+            for(let item of this.sorted) {
+                this.setItemsColor('addSortedItems', [item]);
+            }
+            this.sorted = [];
+
             this.resetValues();
         }
 
@@ -40,21 +45,33 @@ export default class QuickSort extends BaseAlgorithm {
             if(p - 1 > this.l) {
                 this.stack[++this.top] = this.l;
                 this.stack[++this.top] = p - 1;
+            } else if(p - 1 === this.l) {
+                this.sorted.push(this.getIndex(p - 1));
             }
 
             if(p + 1 < this.h) {
                 this.stack[++this.top] = p + 1;
                 this.stack[++this.top] = this.h;
+            } else if(p + 1 === this.h) {
+                this.sorted.push(this.getIndex(p + 1));
             }
         }
     }
 
     testEnd() {
-        return (this.newIter && this.top < 0);
+        let ret = (this.newIter && this.top < 0);
+
+        if(ret) {
+            for(let item of this.sorted) {
+                this.setItemsColor('addSortedItems', [item]);
+            }
+        }
+
+        return ret;
     }
 
     partition() {
-        this.setCurrent([this.getIndex(this.j)]);
+        this.setItemsColor('setActiveItems', [this.getIndex(this.j)]);
 
         if(this.j < this.h) {
             if(this.getValue(this.j) <= this.pivot) {
@@ -65,10 +82,8 @@ export default class QuickSort extends BaseAlgorithm {
             this.j++;
             return true;
         } else {
-            this.setCurrent([this.getIndex(this.h), this.getIndex(this.i + 1)]);
-
+            this.finalChange = true;
             this.swap(this.h, this.i + 1);
-            this.setValues(this.getIndex(this.h), this.getIndex(this.i + 1));
 
             return false;
         }
