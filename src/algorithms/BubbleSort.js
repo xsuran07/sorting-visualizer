@@ -51,7 +51,7 @@ export default class Bubble extends BaseAlgorithm {
                 this.setItemsColor('addSortedItems', [this.getIndex(this.values.length - this.i)]);
             }
 
-            this.setItemsColor('addSortedItems', [this.indices[this.j]]);
+            this.setItemsColor('addSortedItems', [this.getIndex(this.j)]);
         }
 
         return ret;

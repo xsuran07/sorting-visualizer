@@ -7,6 +7,7 @@ import BubbleSort from './algorithms/BubbleSort';
 import InsertionSort from './algorithms/InsertionSort';
 import QuickSort from './algorithms/QuickSort';
 import MergeSort from './algorithms/MergeSort';
+import HeapSort from './algorithms/HeapSort';
 
 import styles from './styles/controlMenu.module.css';
 
@@ -105,6 +106,8 @@ const getAlgorithm = (index) => {
       return new QuickSort();
     case 4:
       return new MergeSort();
+    case 5:
+      return new HeapSort();
     default:
       return null;
     }
@@ -138,6 +141,7 @@ function ChooseAlgo() {
         <option value={2}>Insertion sort</option>
         <option value={3}>QuickSort sort</option>
         <option value={4}>MergeSort sort</option>
+        <option value={5}>HeapSort sort</option>
       </select>
     </div>
   );

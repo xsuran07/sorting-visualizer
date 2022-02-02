@@ -41,7 +41,7 @@ export default class SelectionSort extends BaseAlgorithm {
         let ret = this.i >= (this.values.length - 1);
 
         if(ret) {
-            this.setItemsColor('addSortedItems', [this.indices[0]]);
+            this.setItemsColor('addSortedItems', [this.getIndex(0)]);
         }
 
         return ret;
