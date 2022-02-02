@@ -1,0 +1,26 @@
+:root {
+    --BLOCK-WIDTH: 50px;
+    --GAP: 20px;
+}
+
+.block {
+    position: absolute;
+    bottom: 0px;
+    transition: transform 1s;
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.blockContainer {
+    position: relative;
+    height: 200px;
+    border: 1px solid black;
+    width: calc(var(--BLOCK-WIDTH) * 10 + var(--GAP) * 9);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
