@@ -2,13 +2,7 @@ import { useState } from 'react';
 
 import { useMainContext } from './ContextProvider';
 import * as constants from './constants';
-
-import SelectionSort from './algorithms/SelectionSort';
-import BubbleSort from './algorithms/BubbleSort';
-import InsertionSort from './algorithms/InsertionSort';
-import QuickSort from './algorithms/QuickSort';
-import MergeSort from './algorithms/MergeSort';
-import HeapSort from './algorithms/HeapSort';
+import SelectAlgo from './SelectAlgo';
 
 import styles from './styles/controlMenu.module.css';
 
@@ -65,7 +59,6 @@ function StartAnimation({ algo }) {
     setTimer(t)
   }
 
-
   return (
     <button className={styles.startButton} onClick={(state.running)? () => clear(timer) : handleClick}>
       {((state.running)? 'Stop' : 'Start') + ' sorting'}
@@ -74,15 +67,8 @@ function StartAnimation({ algo }) {
 }
 
 function GenericSlider({ config }) {
-  const [ state, ] = useMainContext();
-
-  const sliderStyle = (state.running && config.disable)? {
-    opacity: '0.1',
-    pointerEvents: 'none'
-  } : {};
-
   return (
-    <div className={styles.itemContainer} style={sliderStyle}>
+    <ItemContainer>
       <label>{config.label}</label>
         <input className={styles.genericSlider}
             type='range'
@@ -90,60 +76,31 @@ function GenericSlider({ config }) {
             step={1}
             value={config.value}
             onChange={(e) => config.setValue(e.target.value)} />
+    </ItemContainer>
+  );
+}
+
+const ItemContainer = ({ children }) => {
+  const [ state, ] = useMainContext();
+
+  const containerStyle = (state.running)? {
+    opacity: '0.1',
+    pointerEvents: 'none'
+  } : {};
+
+  return (
+    <div className={styles.itemContainer} style={containerStyle}>
+      {children}
     </div>
   );
 }
 
-const getAlgorithm = (index) => {
-    switch(index) {
-    case 0:
-      return new SelectionSort();
-    case 1:
-      return new BubbleSort();
-    case 2:
-      return new InsertionSort();
-    case 3:
-      return new QuickSort();
-    case 4:
-      return new MergeSort();
-    case 5:
-      return new HeapSort();
-    default:
-      return null;
-    }
-}
-
 function ChooseAlgo() {
-  const [ state, dispatch ] = useMainContext();
-  const [ algoIndex, setAlgoIndex ] = useState();
-
-  const chooseAlgoStyle = (state.running)? {
-    opacity: '0.2',
-    pointerEvents: 'none'
-  } : {};
-
-  const handleChange = (e) => {
-    setAlgoIndex(parseInt(e.target.value));
-
-    let algo = getAlgorithm(parseInt(e.target.value));
-
-    if(algo) {
-      dispatch({type: 'setAlgorithm', payload: algo});
-    }
-  }
-
   return (
-    <div className={styles.itemContainer} style={chooseAlgoStyle}>
+    <ItemContainer>
       <label>Pick sorting algorithm:</label>
-      <select value={algoIndex} onChange={handleChange}>
-        <option value={0}>Selection sort</option>
-        <option value={1}>Bubble sort</option>
-        <option value={2}>Insertion sort</option>
-        <option value={3}>QuickSort sort</option>
-        <option value={4}>MergeSort sort</option>
-        <option value={5}>HeapSort sort</option>
-      </select>
-    </div>
+      <SelectAlgo />
+    </ItemContainer>
   );
 }
 

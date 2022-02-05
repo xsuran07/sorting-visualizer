@@ -1,0 +1,56 @@
+.selectAlgoContainer {
+    --component-width: 250px;
+
+    display: inline-block;
+    position: relative;
+    font-size: 1.4rem;
+}
+
+.selectAlgo {
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    width: var(--component-width);
+    height: 50x;
+    cursor: pointer;
+    border: 2px solid hsl(205, 96%, 20%);
+    background: hsl(205, 96%, 25%);
+    color: hsl(219, 41%, 80%);
+}
+
+.selectAlgo::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 16px;
+  border: 7px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.selectAlgo.active::after {
+  top: 8px;
+  border-color: transparent transparent #fff transparent;
+}
+
+.selectAlgoContainer ul {
+    width: var(--component-width);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 100;
+}
+
+.algorithm {
+    width: var(--component-width);
+    box-sizing: border-box;
+    padding: 5px;
+    list-style-type: none;
+    background: hsl(205, 96%, 25%);
+    cursor: pointer;
+    border-bottom: 1px solid hsl(205, 96%, 20%);
+    border-left: 1px solid hsl(205, 96%, 20%);
+    border-right: 1px solid hsl(205, 96%, 20%);
+}
+
+.algorithm:hover {
+    background: hsl(205, 96%, 20%);
+}
