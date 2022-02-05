@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import { ContextProvider, useMainContext } from './ContextProvider';
+import { ContextProvider, useMainContext, generateBlock } from './ContextProvider';
 import Blocks from './Blocks';
 import ControlMenu from './ControlMenu';
+
+import './styles/sharedStyles.css';
 
 function Visializer() {
   const [ state, dispatch ] = useMainContext();
@@ -14,7 +16,7 @@ function Visializer() {
 
       for(let i = state.blockList.length; i < state.blockCount; i++) {
         arr.push({
-          value: Math.floor(80 * Math.random() + 40),
+          value: generateBlock(),
           index: i
         });
       }

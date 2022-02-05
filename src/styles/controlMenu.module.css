@@ -1,33 +1,80 @@
-.container {
+.mainContainer {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
+    background-image: linear-gradient(hsl(205, 96%, 26%), hsl(205, 96%, 40%));
+    color: hsl(219, 41%, 70%);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.controlMenuContainer {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: hsl(219, 41%, 80%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .controlMenu {
-    border: 1px solid black;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     height: 200px;
-    width: 800px;
+    width: 80%;
 }
 
-.genericSlider {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid black;
-    /*width: 300px;*/
-}
-
-.select {
+.itemContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid black;
+    height: 90px;
+}
+
+.genericSlider {
+    -webkit-appearance: none;
+    background: hsl(219, 41%, 70%);
+    height: 6px;
+    width: 100%;
+    outline: none;
+    opacity: 0.8;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.genericSlider:hover {
+    opacity: 1;
+}
+
+.genericSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    background: hsl(205, 96%, 15%);
+    cursor: pointer;
+  }
+
+.genericSlider::-moz-range-thumb {
+  width: 35px;
+  height: 35px;
+  background: green;
+  cursor: pointer;
+}
+
+.startButton {
+    border: 3px solid hsl(205, 96%, 20%);
+    background: hsl(205, 96%, 25%);
+    color: hsl(219, 41%, 80%);
+    font-size: 1.8rem;
+    font-weight: bold;
+    width: 200px;
     height: 50px;
+    cursor: pointer;
+}
+
+.startButton:hover {
+    background: hsl(205, 96%, 20%);
 }

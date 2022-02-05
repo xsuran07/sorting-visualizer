@@ -1,46 +1,77 @@
-import styles from './styles/block.module.css';
 import { useMainContext } from './ContextProvider';
+import * as constants from './constants';
 
-const BLOCK_WIDTH = 50;
-const GAP = 20;
+import styles from './styles/block.module.css';
 
-function Block({ order, height, color }) {
-  let offset = 'translate(' + ((GAP + BLOCK_WIDTH) * order) + 'px)';
+// helper functions
+
+const getCurrentParameters = (count) => {
+  const currentSize = constants.CONTAINER_WIDTH / count;
+  const width = parseInt(0.8 * currentSize + (0.2 * currentSize / count));
+  const gap = parseInt(0.2 * currentSize);
+
+  const parameters = {
+    width: width,
+    gap: gap,
+    margin: (constants.CONTAINER_WIDTH - (width * count + gap * (count - 1))) / 2
+  };
+
+  return parameters;
+}
+
+// REACT components
+
+function Block({ params, specifics }) {
+
+  let offset = 'translate(' + (params.margin + (params.width + params.gap) * specifics.order) + 'px)';
 
   const blockStyle = {
-        width: BLOCK_WIDTH + 'px',
-        height: height + 'px',
+        width: params.width + 'px',
+        height: specifics.height + 'px',
         transform: offset,
-        backgroundColor: color
+        backgroundColor: specifics.color,
+        transition: 'transform 0.5s'
     };
 
     return (
-        <div style={blockStyle} className={styles.block}>{height}</div>
+        <div style={blockStyle} className={styles.block}></div>
     );
 }
 
 export default function Blocks({ blockList }) {
   const [ state, ] = useMainContext();
+  const sharedParameters = getCurrentParameters(state.blockCount);
+  const BlockStyle = {
+    width: constants.CONTAINER_WIDTH,
+  };
 
   const getColor = (i) => {
     if(state.swappedItems.includes(i)) {
-      return 'red';
+      return constants.SWAP_ITEM_COLOR;
     } else if(state.activeItems.includes(i)) {
-      return 'green';
+      return constants.ACTIVE_ITEM_COLOR;
     } else if(state.specialItems.includes(i)) {
-      return 'lightgreen';
+      return constants.SPECIAL_ITEM_COLOR;
     } else if(state.sortedItems.includes(i)) {
-      return 'blue';
+      return constants.SORTED_ITEM_COLOR;
     } else {
-      return 'black';
+      return constants.NORMAL_ITEM_COLOR;
+    }
+  }
+
+  const getSpecificParameters = (item, index) => {
+    return {
+      color: getColor(index),
+      height: item.value,
+      order: item.index
     }
   }
 
   return (
     <div className={styles.container}>
-      <div className={styles.blockContainer}>
+      <div style={BlockStyle} className={styles.blockContainer}>
         {blockList.map((value, i) =>
-          <Block key={i} order={value.index} height={value.value} color={getColor(i)} />
+          <Block key={i} params={sharedParameters} specifics={getSpecificParameters(value, i)} />
         )}
       </div>
     </div>

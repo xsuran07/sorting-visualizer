@@ -1,14 +1,18 @@
 import React, { useContext, useReducer } from "react";
 
 import SelectionSort from "./algorithms/SelectionSort";
+import * as constants from './constants';
 
-const INITIAL_COUNT = 5;
 const INITIAL_SPEED = 1;
 
 const MainContext = React.createContext();
 
 export function useMainContext() {
     return useContext(MainContext);
+}
+
+export function generateBlock() {
+    return Math.floor(250 * Math.random() + 45);
 }
 
 const reducer = (state, action) => {
@@ -42,7 +46,7 @@ const reducer = (state, action) => {
 
 const init = () => {
     let initialState = {
-        blockCount: INITIAL_COUNT,
+        blockCount: constants.INITIAL_BLOCK_COUNT,
         speed: INITIAL_SPEED,
         algorithm: new SelectionSort(),
         blockList: [],
@@ -53,9 +57,9 @@ const init = () => {
         running: false
     };
 
-    for(let i = 0; i < INITIAL_COUNT; i++) {
+    for(let i = 0; i < constants.INITIAL_BLOCK_COUNT; i++) {
         initialState.blockList.push({
-            value: Math.floor(80 * Math.random() + 40),
+            value: generateBlock(),
             index: i
         });
     }

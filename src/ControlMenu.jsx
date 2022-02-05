@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useMainContext } from './ContextProvider';
+import * as constants from './constants';
 
 import SelectionSort from './algorithms/SelectionSort';
 import BubbleSort from './algorithms/BubbleSort';
@@ -66,8 +67,8 @@ function StartAnimation({ algo }) {
 
 
   return (
-    <button onClick={(state.running)? () => clear(timer) : handleClick}>
-      {(state.running)? 'stop' : 'start'}
+    <button className={styles.startButton} onClick={(state.running)? () => clear(timer) : handleClick}>
+      {((state.running)? 'Stop' : 'Start') + ' sorting'}
     </button>
   );
 }
@@ -76,20 +77,19 @@ function GenericSlider({ config }) {
   const [ state, ] = useMainContext();
 
   const sliderStyle = (state.running && config.disable)? {
-    opacity: '0.2',
+    opacity: '0.1',
     pointerEvents: 'none'
   } : {};
 
-
   return (
-    <div className={styles.genericSlider} style={sliderStyle}>
+    <div className={styles.itemContainer} style={sliderStyle}>
       <label>{config.label}</label>
-        <input id='slider' type='range'
+        <input className={styles.genericSlider}
+            type='range'
             min={config.min} max={config.max}
             step={1}
             value={config.value}
             onChange={(e) => config.setValue(e.target.value)} />
-        <p>{config.value}</p>
     </div>
   );
 }
@@ -133,7 +133,7 @@ function ChooseAlgo() {
   }
 
   return (
-    <div className={styles.select} style={chooseAlgoStyle}>
+    <div className={styles.itemContainer} style={chooseAlgoStyle}>
       <label>Pick sorting algorithm:</label>
       <select value={algoIndex} onChange={handleChange}>
         <option value={0}>Selection sort</option>
@@ -152,8 +152,8 @@ export default function ControlMenu() {
 
   const blockCountConfig = {
     label: 'Choose number of blocks:',
-    min: 1,
-    max: 10,
+    min: constants.MIN_BLOCKS,
+    max: constants.MAX_BLOCKS,
     value: state.blockCount,
     setValue: (arg) => dispatch({type: 'setBlockCount', payload: arg}),
     disable: true
@@ -169,12 +169,15 @@ export default function ControlMenu() {
   };
 
   return (
-      <div className={styles.container}>
-        <div className={styles.controlMenu}>
-            <GenericSlider config={blockCountConfig} />
-            <ChooseAlgo />
-            <GenericSlider config={speedSlider} />
-            <StartAnimation algo={state.algorithm} />
+      <div className={styles.mainContainer}>
+        <h1>Sorting algorithms visualization</h1>
+        <div className={styles.controlMenuContainer}>
+          <div className={styles.controlMenu}>
+              <GenericSlider config={blockCountConfig} />
+              <ChooseAlgo />
+              <GenericSlider config={speedSlider} />
+              <StartAnimation algo={state.algorithm} />
+          </div>
         </div>
       </div>
   );
