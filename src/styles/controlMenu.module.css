@@ -63,18 +63,3 @@
   background: hsl(205, 96%, 15%);
   cursor: pointer;
 }
-
-.startButton {
-    border: 3px solid hsl(205, 96%, 20%);
-    background: hsl(205, 96%, 25%);
-    color: hsl(219, 41%, 80%);
-    font-size: 1.8rem;
-    font-weight: bold;
-    width: 200px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.startButton:hover {
-    background: hsl(205, 96%, 20%);
-}

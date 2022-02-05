@@ -1,0 +1,23 @@
+.genericButton {
+    border: 2px solid hsl(205, 96%, 20%);
+    cursor: pointer;
+    background: hsl(205, 96%, 25%);
+    color: hsl(219, 41%, 80%);
+    padding: 5px;
+    border-radius: 7%;
+}
+
+.genericButton:hover {
+    background: hsl(205, 96%, 20%);
+}
+
+.startButton {
+    font-size: 1.8rem;
+    font-weight: bold;
+    width: 200px;
+    height: 50px;
+}
+
+.shuffleButton {
+    font-size: 1.5rem;
+}
