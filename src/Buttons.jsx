@@ -61,7 +61,7 @@ export function StartButton() {
     <button className={styles.startButton + ' ' + styles.genericButton}
       onClick={(state.running)? () => clear(timer) : handleClick}
     >
-      {((state.running)? 'Stop' : 'Start') + ' sorting'}
+      {((state.running)? 'Stop' : 'Sort')}
     </button>
   );
 }

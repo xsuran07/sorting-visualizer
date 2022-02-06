@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import { useMainContext } from './ContextProvider';
 import * as constants from './constants';
 
@@ -5,15 +7,17 @@ import styles from './styles/block.module.css';
 
 // helper functions
 
-const getCurrentParameters = (count) => {
-  const currentSize = constants.CONTAINER_WIDTH / count;
-  const width = parseInt(0.8 * currentSize + (0.2 * currentSize / count));
-  const gap = parseInt(0.2 * currentSize);
+const getBlockContainerWidth = () => {
+  return Math.min(document.documentElement.clientWidth - 1, constants.CONTAINER_WIDTH);
+}
+
+const getCurrentParameters = (containerWidth, count) => {
+  const currentSize = containerWidth / count;
+  const width = parseInt(0.8 * currentSize);
 
   const parameters = {
     width: width,
-    gap: gap,
-    margin: (constants.CONTAINER_WIDTH - (width * count + gap * (count - 1))) / 2
+    gap: parseInt((containerWidth - (width * count)) / (count - 1)),
   };
 
   return parameters;
@@ -23,14 +27,14 @@ const getCurrentParameters = (count) => {
 
 function Block({ params, specifics }) {
 
-  let offset = 'translate(' + (params.margin + (params.width + params.gap) * specifics.order) + 'px)';
+  let offset = 'translate(' + ((params.width + params.gap) * specifics.order) + 'px)';
 
   const blockStyle = {
         width: params.width + 'px',
         height: specifics.height + 'px',
         transform: offset,
         backgroundColor: specifics.color,
-        transition: 'transform 0.5s'
+//        transition: 'transform 0.5s'
     };
 
     return (
@@ -40,10 +44,22 @@ function Block({ params, specifics }) {
 
 export default function Blocks({ blockList }) {
   const [ state, ] = useMainContext();
-  const sharedParameters = getCurrentParameters(state.blockCount);
+  const [ currentWidth, setCurrentWidth ] = useState(getBlockContainerWidth());
+  const sharedParameters = getCurrentParameters(currentWidth, state.blockCount);
   const BlockStyle = {
-    width: constants.CONTAINER_WIDTH,
+    maxWidth: constants.CONTAINER_WIDTH
   };
+
+  const handleResize = () => {
+    setCurrentWidth(getBlockContainerWidth());
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => {window.removeEventListener('resize', handleResize)};
+  }, []);
+
+  console.log(currentWidth);
 
   const getColor = (i) => {
     if(state.swappedItems.includes(i)) {

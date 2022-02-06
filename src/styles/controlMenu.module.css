@@ -22,8 +22,24 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    height: 200px;
-    width: 80%;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    min-height: 700px;
+}
+
+@media all and (min-width: 1000px) {
+    .controlMenu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-height:200px;
+    }
+}
+
+@media all and (min-width: 1400px) {
+    .controlMenu {
+        width: 90%;
+    }
 }
 
 .itemContainer {
