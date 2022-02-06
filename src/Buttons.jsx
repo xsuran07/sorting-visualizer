@@ -67,8 +67,28 @@ export function StartButton() {
 }
 
 export function ShuffleButton() {
+    const [ state, dispatch ] = useMainContext();
+
+    // Fisher-Yates algoritm to shuffle array
+    const shuffleArray = () => {
+        let arr = state.blockList.slice();
+
+        for(let i = state.blockCount - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+
+            const tmp = arr[i].index;
+            arr[i].index = arr[j].index;
+            arr[j].index = tmp;
+        }
+
+        dispatch({ type: 'setBlockList', payload: arr });
+        dispatch({type: 'setSortedItems', payload: []});
+    }   
+
     return (
-      <button className={styles.genericButton + ' ' + styles.shuffleButton}>
+      <button className={styles.genericButton + ' ' + styles.shuffleButton}
+        onClick={shuffleArray}
+      >
         Shuffle
       </button>
     );
