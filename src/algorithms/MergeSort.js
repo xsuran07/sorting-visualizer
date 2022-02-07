@@ -6,54 +6,76 @@ export default class MergeSort extends BaseAlgorithm {
 
         this.currSize = 1;
         this.leftStart = 0;
+        this.merging = false;
     }
 
     animate() {
-        this.merge()
-        this.leftStart += 2 * this.currSize;
+        this.setItemsColor('setActiveItems', []);
+        this.setItemsColor('setSwappedItems', [this.getIndex(this.rightStart)]);
+
+        let index = this.rightStart;
+        let value = this.getIndex(this.rightStart);
+
+        while(index !== this.currPos) {
+            this.setIndex(index, this.getIndex(index - 1));
+            index--;
+        }
+
+        this.setIndex(this.currPos, value);
+        this.setItemsColor('addSortedItems', [this.getIndex(this.currPos)]);
+
+        this.currPost++;
+        this.mid++;
+        this.rightStart++;
     }
 
     logic() {
-        this.setItemsColor('setSortedItems', []);
+        if(this.merging) {
+            this.merge();
+        } else {
+            this.setItemsColor('setSortedItems', []);
+            this.setItemsColor('setActiveItems', []);
 
-        if(this.leftStart >= this.values.length) {
-            this.leftStart = 0;
-            this.currSize *= 2;
+            if(this.leftStart >= this.values.length) {
+                this.leftStart = 0;
+                this.currSize *= 2;
+            }
+
+            this.currPos = this.leftStart;
+            this.mid = Math.min(this.leftStart + this.currSize - 1, this.values.length - 1);
+            this.rightStart = this.mid + 1;
+            this.end = Math.min(this.leftStart + 2 * this.currSize - 1, this.values.length - 1);
+
+            let lenLeft = this.mid - this.leftStart + 1;
+            let lenRight = this.end - this.mid;
+            let tmpArr = [];
+
+            // color left subarray
+            for(let i = 0; i < lenLeft; i++) {
+                tmpArr.push(this.getIndex(this.leftStart + i));
+            }
+
+            // color right subarray
+            for(let i = 0; i < lenRight; i++) {
+                tmpArr.push(this.getIndex(this.rightStart + i));
+            }
+
+            this.setItemsColor('setSpecialItems', tmpArr);
+
+            if(this.rightStart >= this.values.length) {
+                this.addSorted(this.leftStart, this.end);
+                this.leftStart += 2 * this.currSize;
+            } else {
+                this.merging = true;
+            }
         }
-
-        // get start index of first subarrray, 
-        this.mid = Math.min(this.leftStart + this.currSize - 1, this.values.length - 1);
-        this.rightStart = this.mid + 1;
-        this.end = Math.min(this.leftStart + 2 * this.currSize - 1, this.values.length - 1);
-
-        this.lenLeft = this.mid - this.leftStart + 1;
-        this.lenRight = this.end - this.mid;
-
-        this.leftArr = Array(this.lenLeft);
-        this.rightArr = Array(this.lenRight);
-
-        // copy left subarray
-        for(let i = 0; i < this.lenLeft; i++) {
-            this.leftArr[i] = this.getIndex(this.leftStart + i);
-        }
-
-        this.setItemsColor('setActiveItems', this.leftArr);
-
-        // copy right subarray
-        for(let i = 0; i < this.lenRight; i++) {
-            this.rightArr[i] = this.getIndex(this.rightStart + i);
-        }
-
-        this.setItemsColor('setSpecialItems', this.rightArr);
-
-        this.animation = true;
     }
 
     testEnd() {
         let ret = this.currSize >= this.values.length;
 
         if(ret) {
-            this.setItemsColor('setSortedItems', this.leftArr);
+            this.addSorted(0, this.values.length - 1);
         }
 
         return ret;
@@ -64,42 +86,45 @@ export default class MergeSort extends BaseAlgorithm {
     }
 
     merge() {
-        let i = 0;
-        let j = 0;
-        let k = this.leftStart;
-
-        while (i < this.lenLeft && j < this.lenRight) {
-            if (this.getValueFromIndex(this.leftArr[i]) <= this.getValueFromIndex(this.rightArr[j])) {
-                this.setIndex(k, this.leftArr[i]);
-                i++;
-            } else {
-                this.setIndex(k, this.rightArr[j]);
-                j++;
-            }
-
-            k++;
+        if(this.currPos - 1 >= this.leftStart) {
+            this.setItemsColor('addSortedItems', [this.getIndex(this.currPos - 1)]);
         }
 
-        while(i < this.lenLeft) {
-            this.setIndex(k, this.leftArr[i]);
-            i++;
-            k++;
+        if(this.currPos > this.mid || this.rightStart > this.end) {
+            this.addSorted(this.currPos, this.end);
+            this.merging = false;
+            this.leftStart += 2 * this.currSize;
+            return;
         }
 
-        while(j < this.lenRight) {
-            this.setIndex(k, this.rightArr[j]);
-            j++;
-            k++;
+        // both subarrays are already sorted
+        if(this.currPos === this.leftStart && this.getValue(this.mid) <= this.getValue(this.rightStart)) {
+            this.addSorted(this.leftStart, this.end);
+            this.merging = false;
+            this.leftStart += 2 * this.currSize;
+            return;
         }
+
+        this.setItemsColor('setActiveItems', [this.getIndex(this.currPos)]);
+
+        if(this.getValue(this.currPos) > this.getValue(this.rightStart)) {
+            this.animation = true;
+        } else {
+            this.currPos++;
+        }
+    }
+
+    addSorted(start, end) {
+        let tmpArr = [];
+        for(let i = start; i <= end; i++) {
+            tmpArr.push(this.getIndex(i));
+        }
+
+        this.setItemsColor('addSortedItems', tmpArr);
     }
 
     setIndex(pos, value) {
         this.setValues('updateIndex', { item: value, index: pos });
-
-        if(this.indices[pos] !== value) {
-            this.setItemsColor('addSwappedItems', [value]);
-        }
-
         this.indices[pos] = value;
     }
 }

@@ -29,9 +29,7 @@ export default class QuickSort extends BaseAlgorithm {
 
     logic() {
         if(this.newIter) {
-            for(let item of this.sorted) {
-                this.setItemsColor('addSortedItems', [item]);
-            }
+            this.setItemsColor('addSortedItems', this.sorted);
             this.sorted = [];
 
             this.resetValues();
@@ -62,9 +60,7 @@ export default class QuickSort extends BaseAlgorithm {
         let ret = (this.newIter && this.top < 0);
 
         if(ret) {
-            for(let item of this.sorted) {
-                this.setItemsColor('addSortedItems', [item]);
-            }
+            this.setItemsColor('addSortedItems', this.sorted);
         }
 
         return ret;

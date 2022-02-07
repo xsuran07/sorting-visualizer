@@ -63,12 +63,12 @@ export default function Blocks({ blockList }) {
   const getColor = (i) => {
     if(state.swappedItems.includes(i)) {
       return constants.SWAP_ITEM_COLOR;
+    } else if(state.sortedItems.includes(i)) {
+      return constants.SORTED_ITEM_COLOR;
     } else if(state.activeItems.includes(i)) {
       return constants.ACTIVE_ITEM_COLOR;
     } else if(state.specialItems.includes(i)) {
       return constants.SPECIAL_ITEM_COLOR;
-    } else if(state.sortedItems.includes(i)) {
-      return constants.SORTED_ITEM_COLOR;
     } else {
       return constants.NORMAL_ITEM_COLOR;
     }
