@@ -1,15 +1,21 @@
 /**
  * @brief Base class for all sorting algorithms.
+ * 
  * @file BaseAlgorithm.js
+ * @author Jakub Šuráň
  */
 
+/**
+ * @brief Base class for all sorting algorithm. It implements all
+ * shared methods.
+ */
 export default class BaseAlgorithm {
     /**
-     * Initialize necessary values before run of algorithm.
+     * @brief Initialize necessary values before run of algorithm.
      *
-     * @param {array} values 
+     * @param {array} values Array with representation of objects to sort.
      * @param {function} setValues 
-     * @param {function} setItemColor
+     * @param {function} setItemColor Callback for setting color of blocks.
      */
     init(values, setValues, setItemsColor) {
         // flag which signals active animation
@@ -30,7 +36,7 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Animation connected to run of algorithm. This method should be
+     * @brief Animation connected to run of algorithm. This method should be
      * reimplemented by particular algorithm.
      */
     animate() {
@@ -38,14 +44,14 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Main logic of particular sorting algorithm.
+     * @brief Main logic of particular sorting algorithm.
      */
     logic() {
         return;
     }
 
     /**
-     * Test if sorting is finished.
+     * @brief Test if sorting is finished already.
      * 
      * @returns true if algorithm is over, false otherwise.
      */
@@ -54,7 +60,7 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Perform one step of algorithm.
+     * @brief Perform one step of algorithm.
      * 
      * @returns true if last step has been performed, false otherwise.
      */
@@ -80,12 +86,13 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Swaps two items in indices array and propagete this swap
+     * @brief Swaps two items in indices array and propagete this swap
      * to main state variable.
      * 
-     * @param {number} a 
-     * @param {number} b
-     * @param {boolean} hideSpecial
+     * @param {number} a Position of the first object to swap.
+     * @param {number} b Position of the second object to swap.
+     * @param {boolean} hideSpecial Simple flag - when set, removes color from
+     * special items (default value is true).
      */
     swap(a, b, hideSpecial = true) {
         if(this.finalChange) {
@@ -109,22 +116,22 @@ export default class BaseAlgorithm {
     }
 
     /**
-     * Convenient method to access items from indices array.
+     * @brief Convenient method to access items from indices array.
      *
-     * @param {number} index 
-     * @returns 
+     * @param {number} index Position of item to inspect.
+     * @returns index of item on specified posiotion.
      */
     getIndex(index) {
         return this.indices[index];
     }
 
     /**
-     * Convenient method to access items from values array.
+     * @brief Convenient method to access items from values array.
      * 
-     * @param {number} index 
-     * @returns 
+     * @param {number} index Position of item to inspect.
+     * @returns value of item on specified posiotion.
      */
     getValue(index) {
-        return this.values[this.indices[index]].value;
+        return this.values[this.getIndex(index)].value;
     }
 }
