@@ -3,8 +3,6 @@ import React, { useContext, useReducer } from "react";
 import SelectionSort from "./algorithms/SelectionSort";
 import * as constants from './constants';
 
-const INITIAL_SPEED = 1;
-
 const MainContext = React.createContext();
 
 export function useMainContext() {
@@ -47,7 +45,7 @@ const reducer = (state, action) => {
 const init = () => {
     let initialState = {
         blockCount: constants.INITIAL_BLOCK_COUNT,
-        speed: INITIAL_SPEED,
+        speed: constants.INITIAL_SPEED,
         algorithm: new SelectionSort(),
         blockList: [],
         swappedItems: [],

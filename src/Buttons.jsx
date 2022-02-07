@@ -1,16 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useMainContext } from './ContextProvider';
+import * as constants from './constants';
 
 import styles from './styles/buttons.module.css';
 
 export function StartButton() {
   const [ state, dispatch ] = useMainContext();
-  const [ timer, setTimer ] = useState(null);
+  const [ timer, setTimer ] = useState(1);
+  const [ animation, setAnimation ] = useState(1);
+  const animationInterval = (constants.SIZE_COEF / state.blockCount) * constants.SPEED_COEF / state.speed;
 
-  function clear(t) {
+  console.log(animationInterval)
+  useEffect(() => {
+      if(state.running) {
+        let t = setTimeout(() => algoStep(timer, setAnimation), animationInterval);
+        setTimer(t);
+      }
+  }, [animation]);
+
+  /**
+   * Stop animation and perform necessary cleanup.
+   * 
+   * @param {timeout object} t 
+   */
+  const clear = (t) => {
     // stop animations
-    clearInterval(t);
+    clearTimeout(t);
 
     // reset values of state variables
     dispatch({type: 'setSwappedItems', payload: []});
@@ -19,42 +35,63 @@ export function StartButton() {
     dispatch({type: 'toggleRunning'});
   }
 
+  /**
+   * Perform specified action on blocks.
+   * 
+   * @param {string} type 
+   * @param {any} payload 
+   */
+  const updateBlocks = (type, payload) => {
+    let arr = state.blockList.slice();
+
+    switch(type) {
+    case 'swap':
+      let tmp = arr[payload.a].index;
+      arr[payload.a].index = arr[payload.b].index;
+      arr[payload.b].index = tmp;
+      break;
+    case 'updateIndex':
+      arr[payload.item].index = payload.index;
+      break;
+    default:
+      return;
+    }
+
+    dispatch({type: 'setBlockList', payload: arr});
+  }
+
+  /**
+   * Perform one step of sorting and plan another step if soritng isn't
+   * finished.
+   * 
+   * @param {timeout object} t 
+   */
+  const algoStep = (t, setter) => {
+    if(state.algorithm.step()) {
+      clear(t);
+    } else {
+      setter(prev => -1 * prev);
+    }
+  }
+
+  /**
+   * Callback function for handling click of the button
+   */
   const handleClick = () => {
-    const algoStep = (t) => {
-      if(state.algorithm.step()) {
-        clear(t);
-      }
-    }
-
-    const change = (type, payload) => {
-      let arr = state.blockList.slice();
-
-      switch(type) {
-      case 'swap':
-        let tmp = arr[payload.a].index;
-        arr[payload.a].index = arr[payload.b].index;
-        arr[payload.b].index = tmp;
-        break;
-      case 'updateIndex':
-        arr[payload.item].index = payload.index;
-        break;
-      default:
-        return;
-      }
-
-      dispatch({type: 'setBlockList', payload: arr});
-    }
-
-    const setItemsolor = (type, payload) => {
-        dispatch({type: type, payload: payload});
-    }
 
     dispatch({type: 'setSortedItems', payload: []});
     dispatch({type: 'toggleRunning'});
 
-    state.algorithm.init(state.blockList, change, setItemsolor);
-    let t = setInterval(() => algoStep(t), 1000);
-    setTimer(t)
+    // initialize sorting algorithm
+    state.algorithm.init(
+      state.blockList,
+      updateBlocks,
+      (type, payload) => {
+        dispatch({type: type, payload: payload
+      })
+    });
+
+    algoStep(timer, setAnimation);
   }
 
   return (

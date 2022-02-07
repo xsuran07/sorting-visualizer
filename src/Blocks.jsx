@@ -26,15 +26,16 @@ const getCurrentParameters = (containerWidth, count) => {
 // REACT components
 
 function Block({ params, specifics }) {
-
+  const [ state, ] = useMainContext();
   let offset = 'translate(' + ((params.width + params.gap) * specifics.order) + 'px)';
+  const interval = (constants.SIZE_COEF / state.blockCount) * constants.ANIMATION_SPEED_COEF * constants.SPEED_COEF / state.speed;
 
   const blockStyle = {
         width: params.width + 'px',
         height: specifics.height + 'px',
         transform: offset,
         backgroundColor: specifics.color,
-//        transition: 'transform 0.5s'
+        transition: (state.running)? `transform ${interval}ms` : ''
     };
 
     return (
@@ -58,8 +59,6 @@ export default function Blocks({ blockList }) {
     window.addEventListener('resize', handleResize)
     return () => {window.removeEventListener('resize', handleResize)};
   }, []);
-
-  console.log(currentWidth);
 
   const getColor = (i) => {
     if(state.swappedItems.includes(i)) {

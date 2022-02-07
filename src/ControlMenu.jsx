@@ -66,8 +66,8 @@ export default function ControlMenu() {
 
   const speedSlider = {
     label: 'Choose speed:',
-    min: 0,
-    max: 2,
+    min: constants.MIN_SPEED,
+    max: constants.MAX_SPEED,
     value: state.speed,
     setValue: (arg) => dispatch({type: 'setSpeed', payload: arg}),
     disable: false
