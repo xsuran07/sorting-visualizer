@@ -1,3 +1,12 @@
+/**
+ * @brief Imentation of components representing buttons from
+ * control menu.
+ * 
+ * @file Buttons.js
+ * @author Jakub Šuráň
+ */
+
+
 import { useState, useEffect } from 'react';
 
 import { useMainContext } from './ContextProvider';
@@ -5,13 +14,16 @@ import * as constants from './constants';
 
 import styles from './styles/buttons.module.css';
 
+/**
+ * @brief Component representing button to start sonting animation.
+ */
 export function StartButton() {
   const [ state, dispatch ] = useMainContext();
   const [ timer, setTimer ] = useState(1);
   const [ animation, setAnimation ] = useState(1);
   const animationInterval = (constants.SIZE_COEF / state.blockCount) * constants.SPEED_COEF / state.speed;
 
-  console.log(animationInterval)
+  // plan next step of sorting algorithm
   useEffect(() => {
       if(state.running) {
         let t = setTimeout(() => algoStep(timer, setAnimation), animationInterval);
@@ -22,7 +34,7 @@ export function StartButton() {
   /**
    * Stop animation and perform necessary cleanup.
    * 
-   * @param {timeout object} t 
+   * @param {number} t Timer representation.
    */
   const clear = (t) => {
     // stop animations
@@ -64,7 +76,7 @@ export function StartButton() {
    * Perform one step of sorting and plan another step if soritng isn't
    * finished.
    * 
-   * @param {timeout object} t 
+   * @param {number} t Timer representation.
    */
   const algoStep = (t, setter) => {
     if(state.algorithm.step()) {
@@ -103,10 +115,13 @@ export function StartButton() {
   );
 }
 
+/**
+ * @brief Component representin button for shuffling of the blocks.
+ */
 export function ShuffleButton() {
     const [ state, dispatch ] = useMainContext();
 
-    // Fisher-Yates algoritm to shuffle array
+    // callbeck for click aciton - use Fisher-Yates algoritm to shuffle array
     const shuffleArray = () => {
         let arr = state.blockList.slice();
 

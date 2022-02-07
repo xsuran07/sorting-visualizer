@@ -1,3 +1,10 @@
+/**
+ * @brief Base file of the react application.
+ * 
+ * @file index.js
+ * @author Jakub Šuráň
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

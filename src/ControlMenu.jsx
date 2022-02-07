@@ -1,3 +1,11 @@
+/**
+ * @brief Implementation of component representing menu
+ * to control the application.
+ * 
+ * @file ControlMenu.js
+ * @author Jakub Šuráň
+ */
+
 import { useMainContext } from './ContextProvider';
 import * as constants from './constants';
 import SelectAlgo from './SelectAlgo';
@@ -5,6 +13,13 @@ import { StartButton, ShuffleButton } from './Buttons';
 
 import styles from './styles/controlMenu.module.css';
 
+/**
+ * @brief Component representing general container for items
+ * in control menu.
+ * 
+ * @param {object} param0 Children of this component + flag to determine
+ * if childs should be hidden during animations. 
+ */
 const ItemContainer = ({ children, hide = true }) => {
   const [ state, ] = useMainContext();
 
@@ -20,6 +35,12 @@ const ItemContainer = ({ children, hide = true }) => {
   );
 }
 
+/**
+ * @brief Component representing general slider. It could be parametrized
+ * with configuration object.
+ * 
+ * @param {object} param0 Object with configuration for component.
+ */
 function GenericSlider({ config }) {
   return (
     <ItemContainer hide={config.disable}>
@@ -34,6 +55,9 @@ function GenericSlider({ config }) {
   );
 }
 
+/**
+ * @brief Wrapper for component representing algorithm select.
+ */
 function ChooseAlgo() {
   return (
     <ItemContainer>
@@ -43,6 +67,10 @@ function ChooseAlgo() {
   );
 }
 
+/**
+ * @brief Wrapper for component represenint button which allow
+ * shuffle of the blocks.
+ */
 const ShuffleBlocks = () => {
   return (
     <ItemContainer>
@@ -52,9 +80,13 @@ const ShuffleBlocks = () => {
   );
 }
 
+/**
+ * @brief Component representing control menu.
+ */
 export default function ControlMenu() {
   const [ state, dispatch ] = useMainContext();
 
+  // parameters for slider to pick number of blocks
   const blockCountConfig = {
     label: 'Choose number of blocks:',
     min: constants.MIN_BLOCKS,
@@ -64,6 +96,7 @@ export default function ControlMenu() {
     disable: true
   };
 
+  // parameters for slidr to pick speed of animation
   const speedSlider = {
     label: 'Choose speed:',
     min: constants.MIN_SPEED,

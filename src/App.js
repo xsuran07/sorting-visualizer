@@ -1,4 +1,11 @@
-import { useState, useEffect } from 'react';
+/**
+ * @brief Base file of sorting visualizer application.
+ * 
+ * @file App.js
+ * @author Jakub Šuráň
+ */
+
+import { useEffect } from 'react';
 
 import { ContextProvider, useMainContext, generateBlock } from './ContextProvider';
 import Blocks from './Blocks';
@@ -6,14 +13,18 @@ import ControlMenu from './ControlMenu';
 
 import './styles/sharedStyles.css';
 
-function Visializer() {
+/**
+ * @brief Component representing sorting visualizer.
+ */
+function SortingVisializer() {
   const [ state, dispatch ] = useMainContext();
-//  const [ algorithm, ] = useState(new BubbleSort());
 
+  // handle change in number of blocks
   useEffect(() =>
     {
       const arr = state.blockList.filter(obj => obj.index < state.blockCount);
 
+      // generate parameters for new blocks
       for(let i = state.blockList.length; i < state.blockCount; i++) {
         arr.push({
           value: generateBlock(),
@@ -31,7 +42,7 @@ function Visializer() {
   return (
       <div>
         <ControlMenu />
-        <Blocks blockList={state.blockList} />
+        <Blocks />
       </div>
   );
 }
@@ -39,7 +50,7 @@ function Visializer() {
 export default function App() {
   return (
     <ContextProvider>
-          <Visializer />
+          <SortingVisializer />
     </ContextProvider>
   );
 }

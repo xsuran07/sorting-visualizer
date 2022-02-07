@@ -1,3 +1,10 @@
+/**
+ * @brief Implementation of component for picking sorting algorithm.
+ * 
+ * @file SelectAlgo.jsx
+ * @author Jakub Šuráň
+ */
+
 import { useState, useEffect } from "react";
 
 import { useMainContext } from './ContextProvider';
@@ -10,6 +17,15 @@ import HeapSort from './algorithms/HeapSort';
 
 import styles from './styles/selectAlgo.module.css';
 
+// helper functions
+
+/**
+ * @brief According to given string returns
+ * object representing particular algorithm.
+ * 
+ * @param {string} name Name of sorting algorithm.
+ * @returns object representing particular sorting algorithm.
+ */
 const getAlgorithm = (name) => {
     switch(name) {
     case 'Selection':
@@ -29,11 +45,16 @@ const getAlgorithm = (name) => {
     }
 }
 
+// REACT components
+
+/**
+ * @brief Component representing select - allows user to pick
+ * sorting algorithm.
+ */
 export default function SelectAlgo() {
     const [ showOptions, setShowOptions ] = useState(false);
     const [ chosenOption, setChosenOption ] = useState('Selection');
     const [ , dispatch ] = useMainContext();
-
     const options = [
         'Selection',
         'Bubble',
@@ -43,6 +64,7 @@ export default function SelectAlgo() {
         'Heap',
     ];
 
+    // add callback to document
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
 
@@ -56,6 +78,7 @@ export default function SelectAlgo() {
         setShowOptions(prev => !prev);
     }
 
+    // handle click on particular sorting algorithm
     const handleOptionClick = (e) => {
         const name = e.target.getAttribute('name');
 
@@ -70,6 +93,7 @@ export default function SelectAlgo() {
         }
     }
 
+    // handles clicks outside of this component
     const handleClickOutside = (e) => {
         if(!e.target.classList.contains(styles.selectAlgo) && !e.target.classList.contains(styles.algorithm)) {
             setShowOptions(false);
