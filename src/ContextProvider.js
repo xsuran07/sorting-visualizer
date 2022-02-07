@@ -10,7 +10,7 @@ export function useMainContext() {
 }
 
 export function generateBlock() {
-    return Math.floor(250 * Math.random() + 45);
+    return Math.floor(constants.MAX_BLOCK_HEIGHT * Math.random() + constants.MIN_BLOCK_HEIGHT);
 }
 
 const reducer = (state, action) => {

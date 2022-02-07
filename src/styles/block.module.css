@@ -7,14 +7,17 @@
 }
 
 .blockContainer {
+    box-sizing: content-box;
+    background-color: white;
     position: relative;
     height: 300px;
-    border: 1px solid black;
     width: 100%;
+    border: 5px solid hsl(205, 96%, 20%);
 }
 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 500px;
 }

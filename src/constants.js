@@ -2,6 +2,10 @@ export const MIN_BLOCKS = 10;
 export const MAX_BLOCKS = 100;
 export const INITIAL_BLOCK_COUNT = parseInt((MIN_BLOCKS + MAX_BLOCKS) / 2);
 
+export const MIN_OFFSET = 2;
+export const MAX_BLOCK_HEIGHT = 300;
+export const MIN_BLOCK_HEIGHT = 45;
+export const BLOCK_HEIGHT_RANGE = MAX_BLOCK_HEIGHT - MIN_BLOCK_HEIGHT;
 export const CONTAINER_WIDTH = 800;
 
 export const SWAP_ITEM_COLOR = 'red';

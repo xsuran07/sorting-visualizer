@@ -8,16 +8,18 @@ import styles from './styles/block.module.css';
 // helper functions
 
 const getBlockContainerWidth = () => {
-  return Math.min(document.documentElement.clientWidth - 1, constants.CONTAINER_WIDTH);
+  return Math.min(document.documentElement.clientWidth - 1, constants.CONTAINER_WIDTH - 2 * constants.MIN_OFFSET);
 }
 
 const getCurrentParameters = (containerWidth, count) => {
   const currentSize = containerWidth / count;
   const width = parseInt(0.8 * currentSize);
+  const gap = parseInt((containerWidth - (width * count)) / (count - 1));
 
   const parameters = {
     width: width,
-    gap: parseInt((containerWidth - (width * count)) / (count - 1)),
+    gap: gap,
+    margin: (containerWidth - (count * width + (count - 1) * gap)) / 2
   };
 
   return parameters;
@@ -27,13 +29,13 @@ const getCurrentParameters = (containerWidth, count) => {
 
 function Block({ params, specifics }) {
   const [ state, ] = useMainContext();
-  let offset = 'translate(' + ((params.width + params.gap) * specifics.order) + 'px)';
+  const offsetSize = constants.MIN_OFFSET + params.margin + (params.width + params.gap) * specifics.order;
   const interval = (constants.SIZE_COEF / state.blockCount) * constants.ANIMATION_SPEED_COEF * constants.SPEED_COEF / state.speed;
 
   const blockStyle = {
         width: params.width + 'px',
         height: specifics.height + 'px',
-        transform: offset,
+        transform: `translate(${offsetSize}px)`,
         backgroundColor: specifics.color,
         transition: (state.running)? `transform ${interval}ms` : ''
     };
@@ -48,7 +50,8 @@ export default function Blocks({ blockList }) {
   const [ currentWidth, setCurrentWidth ] = useState(getBlockContainerWidth());
   const sharedParameters = getCurrentParameters(currentWidth, state.blockCount);
   const BlockStyle = {
-    maxWidth: constants.CONTAINER_WIDTH
+    maxWidth: constants.CONTAINER_WIDTH,
+    height: constants.MAX_BLOCK_HEIGHT * 1.2
   };
 
   const handleResize = () => {

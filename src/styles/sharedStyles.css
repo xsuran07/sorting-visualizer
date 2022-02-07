@@ -3,3 +3,7 @@
     padding: 0px;
     box-sizing: border-box;
 }
+
+body {
+    background-image: linear-gradient(to right, hsl(205, 96%, 45%), hsl(205, 96%, 30%));
+}
